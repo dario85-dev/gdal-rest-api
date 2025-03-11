@@ -24,6 +24,14 @@ It provides endpoints for **raster and vector operations**, such as extracting m
 
 ## 🏗 **Installation & Setup**
 
+###  **Using Conda
+```sh
+conda env create --prefix .venv -f environment.yml
+
+conda activate .venv/
+
+```
+
 ### 1️⃣ **Clone the Repository**
 ```sh
 git clone https://github.com/your-username/gdal-rest-api.git
