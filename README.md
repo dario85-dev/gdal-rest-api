@@ -24,7 +24,7 @@ It provides endpoints for **raster and vector operations**, such as extracting m
 
 ## 🏗 **Installation & Setup**
 
-###  **Using Conda
+### sou **Using Conda
 ```sh
 conda env create --prefix .venv -f environment.yml
 
