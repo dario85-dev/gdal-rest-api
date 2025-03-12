@@ -143,6 +143,33 @@ curl -X 'POST' \
 }
 ```
 
+### 7️⃣ Download WMS as GeoTIFF ('wms_to_geotiff')
+```sh
+curl -X 'GET' \
+  'http://localhost:8000/wms_to_geotiff/?wms_url=https://wms.example.com&layers=my_layer&bbox=-180,-90,180,90&width=1024&height=1024&crs=EPSG:4326' \
+  --output output.tif
+```
+#### 🔹 Response:
+```json
+{
+  "message": "GeoTIFF file generated",
+  "output_file": "/tmp/...wms.tif"
+}
+```
+
+
+### 🔹 8 Download Processed Files ('download')
+```sh
+curl -X 'GET' \
+  'http://localhost:8000/download/output.tif' --output output.tif
+```
+#### 🔹 Response:
+```json
+{
+  "message": "File downloaded successfully"
+}
+```
+
 ---
 
 ### 📬 **Contributing**
