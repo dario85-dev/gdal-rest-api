@@ -110,7 +110,12 @@ async def wms_to_geotiff(
     bbox: str = Query(..., description="Bounding box nel formato xmin,ymin,xmax,ymax"),
     width: int = Query(1024, description="Larghezza dell'immagine in pixel"),
     height: int = Query(1024, description="Altezza dell'immagine in pixel"),
-    crs: str = Query("EPSG:4326", description="Codice EPSG del sistema di riferimento")
+    crs: str = Query("EPSG:4326", description="Codice EPSG del sistema di riferimento"),
+    version: str = Query("1.3.0", description="Versione del servizio WMS"),
+    format: str = Query("image/png", description="Formato dell'immagine"),
+    token: str = Query(None, description="Token di autenticazione per il servizio WMS"),
+    user: str = Query(None, description="Nome utente per l'autenticazione"),
+    password: str = Query(None, description="Password per l'autenticazione")
 ):
     """
     Scarica un'immagine da un servizio WMS e la converte in GeoTIFF.
@@ -123,7 +128,7 @@ async def wms_to_geotiff(
         geotiff_path = os.path.join(TEMP_DIR, geotiff_filename)
 
         # Costruisci l'URL della richiesta WMS
-        wms_request_url = f"{wms_url}&SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS={layers}&CRS={crs}&BBOX={bbox}&WIDTH={width}&HEIGHT={height}&FORMAT=image/png"
+        wms_request_url = f"{wms_url}&SERVICE=WMS&VERSION={version}&REQUEST=GetMap&LAYERS={layers}&CRS={crs}&BBOX={bbox}&WIDTH={width}&HEIGHT={height}&FORMAT={format}"
 
         # Scarica l'immagine dal WMS
         response = requests.get(wms_request_url, stream=True)
