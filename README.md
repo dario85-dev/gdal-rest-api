@@ -1,26 +1,23 @@
-# 🌍 GDAL REST API 🚀
-A **lightweight REST API** for **geospatial data processing** using **GDAL** and **FastAPI**.  
-It provides endpoints for **raster and vector operations**, such as extracting metadata, format conversions, reprojections, and raster-to-vector transformations.  
+# GDAL API
 
----
+## Descrizione
+GDAL API è un'API REST basata su [FastAPI](https://fastapi.tiangolo.com/) che fornisce strumenti per l'elaborazione di file raster e vettoriali utilizzando [GDAL](https://gdal.org/).
 
-## 📌 **Features**
-✅ **`gdalinfo`** → Get metadata of raster files  
-✅ **`translate`** → Convert raster formats (GeoTIFF, PNG, JPEG, etc.)  
-✅ **`warp`** → Reproject rasters to a different coordinate system  
-✅ **`vector_info`** → Extract metadata from vector files (e.g., Shapefiles)  
-✅ **`raster_to_vector`** → Convert raster files to vector polygons  
+## Caratteristiche principali
+- **gdalinfo**: Ottieni informazioni su un file raster.
+- **translate**: Converti un raster in un altro formato.
+- **warp**: Riprojettare un raster in un altro sistema di riferimento.
+- **vector_info**: Ottieni informazioni su un file vettoriale.
+- **raster_to_vector**: Converti un raster in un file vettoriale.
+- **wms_to_geotiff**: Scarica un'immagine da un WMS e la converte in GeoTIFF.
+- **Monitoraggio dello stato**: Controlla lo stato di un'operazione e scarica il file risultante.
 
----
+## Installazione
 
-## ⚡ **Requirements**
-- 🐍 Python 3.8+  
-- 📦 GDAL (`osgeo/gdal`)  
-- 🚀 FastAPI & Uvicorn  
-- 🐳 Docker *(optional for containerization)*  
-- ☁️ Kubernetes *(optional for deployment)*  
-
----
+### Prerequisiti
+- Python 3.8+
+- GDAL installato nel sistema
+- FastAPI e dipendenze
 
 ## 🏗 **Installation & Setup**
 
@@ -34,7 +31,7 @@ conda activate .venv/
 
 ### 1️⃣ **Clone the Repository**
 ```sh
-git clone https://github.com/your-username/gdal-rest-api.git
+git clone https://github.com/dario85-dev/gdal-rest-api.git
 cd gdal-rest-api
 ```
 
@@ -68,115 +65,101 @@ http://<EXTERNAL-IP>/gdalinfo/
 
 ---
 
-## 📌 **API Endpoints & Requests**
+## Utilizzo
 
-### 🔹 1️⃣ Get Raster Metadata (`gdalinfo`)
-```sh
-curl -X 'POST' \
-  'http://localhost:8000/gdalinfo/' \
-  -F 'file=@/path/to/raster.tif'
+L'API espone diversi endpoint per l'elaborazione di dati raster e vettoriali. Puoi testare gli endpoint tramite l'interfaccia interattiva di Swagger disponibile su:
 ```
-#### 🔹 Response:
+http://localhost:8000/docs
+```
+
+### Endpoint disponibili
+
+#### Verifica lo stato dell'API
+```http
+GET /
+```
+Risposta:
 ```json
-{
-  "filename": "raster.tif",
-  "gdalinfo": "...metadata output..."
-}
+{"message": "GDAL REST API is running!"}
 ```
 
-### 🔹 2️⃣ Convert Raster Format (`translate`)
-```sh
-curl -X 'POST' \
-  'http://localhost:8000/translate/' \
-  -F 'file=@/path/to/raster.tif' \
-  -F 'output_format=PNG'
+#### Ottieni informazioni su un raster
+```http
+POST /gdalinfo/
 ```
-#### 🔹 Response:
+- **Parametri**: file raster come `multipart/form-data`
+- **Risposta**:
 ```json
-{
-  "message": "Raster converted",
-  "output_file": "/tmp/...converted.png"
-}
+{"process_id": "UUID univoco"}
 ```
 
-### 🔹 3️⃣ Reproject Raster (`warp`)
-```sh
-curl -X 'POST' \
-  'http://localhost:8000/warp/' \
-  -F 'file=@/path/to/raster.tif' \
-  -F 'epsg=4326'
+#### Converti un raster in un altro formato
+```http
+POST /translate/
 ```
-#### 🔹 Response:
+- **Parametri**: file raster, formato di output
+- **Risposta**:
 ```json
-{
-  "message": "Raster reprojected",
-  "output_file": "/tmp/...warped.tif"
-}
+{"process_id": "UUID univoco"}
 ```
 
-### 🔹 4️⃣ Get Vector File Metadata (`vector_info`)
-```sh
-curl -X 'POST' \
-  'http://localhost:8000/vector_info/' \
-  -F 'file=@/path/to/vector.shp'
+#### Riprojettare un raster in un altro sistema di riferimento
+```http
+POST /warp/
 ```
-#### 🔹 Response:
+- **Parametri**: file raster, EPSG di destinazione
+- **Risposta**:
 ```json
-{
-  "filename": "vector.shp",
-  "vector_info": "...OGR metadata output..."
-}
+{"process_id": "UUID univoco"}
 ```
 
-### 🔹 5️⃣ Convert Raster to Vector (`raster_to_vector`)
-```sh
-curl -X 'POST' \
-  'http://localhost:8000/raster_to_vector/' \
-  -F 'file=@/path/to/raster.tif' \
-  -F 'output_format=GeoJSON'
+#### Ottieni informazioni su un file vettoriale
+```http
+POST /vector_info/
 ```
-#### 🔹 Response:
+- **Parametri**: file vettoriale
+- **Risposta**:
 ```json
-{
-  "message": "Raster converted to vector",
-  "output_file": "/tmp/...vectorized.geojson"
-}
+{"process_id": "UUID univoco"}
 ```
 
-### 7️⃣ Download WMS as GeoTIFF ('wms_to_geotiff')
-```sh
-curl -X 'GET' \
-  'http://localhost:8000/wms_to_geotiff/?wms_url=https://wms.example.com&layers=my_layer&bbox=-180,-90,180,90&width=1024&height=1024&crs=EPSG:4326' \
-  --output output.tif
+#### Converti un raster in vettoriale
+```http
+POST /raster_to_vector/
 ```
-#### 🔹 Response:
+- **Parametri**: file raster, formato di output
+- **Risposta**:
 ```json
-{
-  "message": "GeoTIFF file generated",
-  "output_file": "/tmp/...wms.tif"
-}
+{"process_id": "UUID univoco"}
 ```
 
-
-### 🔹 8 Download Processed Files ('download')
-```sh
-curl -X 'GET' \
-  'http://localhost:8000/download/output.tif' --output output.tif
+#### Scarica un'immagine WMS e convertila in GeoTIFF
+```http
+GET /wms_to_geotiff/
 ```
-#### 🔹 Response:
+- **Parametri**: URL WMS, strati, bbox, dimensioni, CRS, formato
+- **Risposta**:
 ```json
-{
-  "message": "File downloaded successfully"
-}
+{"process_id": "UUID univoco"}
 ```
 
----
+#### Controlla lo stato di un'operazione
+```http
+GET /status/{process_id}
+```
+- **Risposta**:
+```json
+{"status": "success", "output": "Dettagli"}
+```
 
-### 📬 **Contributing**
-Contributions are welcome! Please submit issues and pull requests.
+#### Scarica il file generato
+```http
+GET /download/{process_id}
+```
+- **Risposta**: Il file elaborato in output.
 
-### 📄 **License**
-This project is licensed under the **MIT License**.
+## Pulizia dei file temporanei
+L'API elimina automaticamente i file temporanei più vecchi di un'ora per evitare l'accumulo di dati inutilizzati.
 
-🚀 **Happy Mapping!** 🌍
-
+## Licenza
+Questa API è rilasciata sotto la licenza MIT.
