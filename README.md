@@ -1,32 +1,31 @@
 # GDAL API
 
-## Descrizione
-GDAL API è un'API REST basata su [FastAPI](https://fastapi.tiangolo.com/) che fornisce strumenti per l'elaborazione di file raster e vettoriali utilizzando [GDAL](https://gdal.org/).
+## Description
+GDAL API is a REST API based on [FastAPI](https://fastapi.tiangolo.com/) that provides tools for processing raster and vector files using [GDAL](https://gdal.org/).
 
-## Caratteristiche principali
-- **gdalinfo**: Ottieni informazioni su un file raster.
-- **translate**: Converti un raster in un altro formato.
-- **warp**: Riprojettare un raster in un altro sistema di riferimento.
-- **vector_info**: Ottieni informazioni su un file vettoriale.
-- **raster_to_vector**: Converti un raster in un file vettoriale.
-- **wms_to_geotiff**: Scarica un'immagine da un WMS e la converte in GeoTIFF.
-- **Monitoraggio dello stato**: Controlla lo stato di un'operazione e scarica il file risultante.
+## Main Features
+- **gdalinfo**: Get information about a raster file.
+- **translate**: Convert a raster into another format.
+- **warp**: Reproject a raster to another reference system.
+- **vector_info**: Get information about a vector file.
+- **raster_to_vector**: Convert a raster into a vector file.
+- **wms_to_geotiff**: Download an image from a WMS and convert it to GeoTIFF.
+- **Process Monitoring**: Check the status of an operation and download the resulting file.
 
-## Installazione
+## Installation
 
-### Prerequisiti
+### Prerequisites
 - Python 3.8+
-- GDAL installato nel sistema
-- FastAPI e dipendenze
+- GDAL installed on the system
+- FastAPI and dependencies
 
 ## 🏗 **Installation & Setup**
 
-### sou **Using Conda
+### 🔧 **Using Conda**
 ```sh
 conda env create --prefix .venv -f environment.yml
 
 conda activate .venv/
-
 ```
 
 ### 1️⃣ **Clone the Repository**
@@ -65,101 +64,101 @@ http://<EXTERNAL-IP>/gdalinfo/
 
 ---
 
-## Utilizzo
+## Usage
 
-L'API espone diversi endpoint per l'elaborazione di dati raster e vettoriali. Puoi testare gli endpoint tramite l'interfaccia interattiva di Swagger disponibile su:
+The API exposes several endpoints for processing raster and vector data. You can test the endpoints using the interactive Swagger interface available at:
 ```
 http://localhost:8000/docs
 ```
 
-### Endpoint disponibili
+### Available Endpoints
 
-#### Verifica lo stato dell'API
+#### Check API Status
 ```http
 GET /
 ```
-Risposta:
+Response:
 ```json
 {"message": "GDAL REST API is running!"}
 ```
 
-#### Ottieni informazioni su un raster
+#### Get Information about a Raster
 ```http
 POST /gdalinfo/
 ```
-- **Parametri**: file raster come `multipart/form-data`
-- **Risposta**:
+- **Parameters**: Raster file as `multipart/form-data`
+- **Response**:
 ```json
-{"process_id": "UUID univoco"}
+{"process_id": "Unique UUID"}
 ```
 
-#### Converti un raster in un altro formato
+#### Convert a Raster into Another Format
 ```http
 POST /translate/
 ```
-- **Parametri**: file raster, formato di output
-- **Risposta**:
+- **Parameters**: Raster file, output format
+- **Response**:
 ```json
-{"process_id": "UUID univoco"}
+{"process_id": "Unique UUID"}
 ```
 
-#### Riprojettare un raster in un altro sistema di riferimento
+#### Reproject a Raster to Another Reference System
 ```http
 POST /warp/
 ```
-- **Parametri**: file raster, EPSG di destinazione
-- **Risposta**:
+- **Parameters**: Raster file, target EPSG
+- **Response**:
 ```json
-{"process_id": "UUID univoco"}
+{"process_id": "Unique UUID"}
 ```
 
-#### Ottieni informazioni su un file vettoriale
+#### Get Information about a Vector File
 ```http
 POST /vector_info/
 ```
-- **Parametri**: file vettoriale
-- **Risposta**:
+- **Parameters**: Vector file
+- **Response**:
 ```json
-{"process_id": "UUID univoco"}
+{"process_id": "Unique UUID"}
 ```
 
-#### Converti un raster in vettoriale
+#### Convert a Raster into a Vector File
 ```http
 POST /raster_to_vector/
 ```
-- **Parametri**: file raster, formato di output
-- **Risposta**:
+- **Parameters**: Raster file, output format
+- **Response**:
 ```json
-{"process_id": "UUID univoco"}
+{"process_id": "Unique UUID"}
 ```
 
-#### Scarica un'immagine WMS e convertila in GeoTIFF
+#### Download a WMS Image and Convert it to GeoTIFF
 ```http
 GET /wms_to_geotiff/
 ```
-- **Parametri**: URL WMS, strati, bbox, dimensioni, CRS, formato
-- **Risposta**:
+- **Parameters**: WMS URL, layers, bbox, dimensions, CRS, format
+- **Response**:
 ```json
-{"process_id": "UUID univoco"}
+{"process_id": "Unique UUID"}
 ```
 
-#### Controlla lo stato di un'operazione
+#### Check the Status of an Operation
 ```http
 GET /status/{process_id}
 ```
-- **Risposta**:
+- **Response**:
 ```json
-{"status": "success", "output": "Dettagli"}
+{"status": "success", "output": "Details"}
 ```
 
-#### Scarica il file generato
+#### Download the Processed File
 ```http
 GET /download/{process_id}
 ```
-- **Risposta**: Il file elaborato in output.
+- **Response**: The processed output file.
 
-## Pulizia dei file temporanei
-L'API elimina automaticamente i file temporanei più vecchi di un'ora per evitare l'accumulo di dati inutilizzati.
+## Temporary File Cleanup
+The API automatically deletes temporary files older than one hour to prevent unnecessary data accumulation.
 
-## Licenza
-Questa API è rilasciata sotto la licenza MIT.
+## License
+This API is released under the MIT license.
