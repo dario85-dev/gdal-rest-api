@@ -136,7 +136,7 @@ POST /raster_to_vector/
 ```http
 GET /wms_to_geotiff/
 ```
-- **Parameters**: WMS URL, layers, bbox, dimensions, CRS, format
+- **Parameters**: wms_url,layers,bbox,width,height,crs,version,format,token,user,password
 - **Response**:
 ```json
 {"process_id": "Unique UUID"}
